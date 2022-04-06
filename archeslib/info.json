@@ -1,0 +1,13 @@
+{
+  "name": "archeslib",
+  "version": "0.1.1",
+  "factorio_version": "1.1",
+  "title": "Arche's Library",
+  "author": "ArcheCraft",
+  "contact": "",
+  "description": "Library for ArcheCraft's mods",
+  "dependencies": [
+    "base",
+    "~ archeslibpost >= 0.1.0"
+  ]
+}

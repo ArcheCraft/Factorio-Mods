@@ -1,0 +1,13 @@
+{
+  "name": "archesvanilla",
+  "version": "0.1.0",
+  "factorio_version": "1.1",
+  "title": "Arche's Vanilla",
+  "author": "ArcheCraft",
+  "contact": "",
+  "description": "Integrates FactorioExtended mods with my other mods",
+  "dependencies": [
+    "base",
+    "archeslib >= 0.1.0"
+  ]
+}

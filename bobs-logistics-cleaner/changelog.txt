@@ -1,0 +1,30 @@
+---------------------------------------------------------------------------------------------------
+Version: 0.1.4
+Date: ????
+  Changes:
+---------------------------------------------------------------------------------------------------
+Version: 0.1.3
+Date: 2022-04-06
+  Changes:
+    - Add more options for missing items from bob's logistics
+    - -> Pipes
+    - -> Trains
+    - -> Pumps
+    - -> Repair packs
+    - -> Storage tanks
+---------------------------------------------------------------------------------------------------
+Version: 0.1.2
+Date: 2022-04-06
+  Changes:
+---------------------------------------------------------------------------------------------------
+Version: 0.1.1
+Date: 2022-04-03
+  Changes:
+    - Fix typo in description
+    - Copy some data from game prototypes to every force's technologies and recipies so
+      that changes in the settings get correctly applied to existing saves
+---------------------------------------------------------------------------------------------------
+Version: 0.1.0
+Date: 2022-04-03
+  Changes:
+    - Initial Release

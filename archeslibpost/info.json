@@ -1,0 +1,21 @@
+{
+  "name": "archeslibpost",
+  "version": "0.1.2",
+  "factorio_version": "1.1",
+  "title": "Arche's Library (Postprocessing)",
+  "author": "ArcheCraft",
+  "contact": "",
+  "description": "Library for ArcheCraft's mods",
+  "dependencies": [
+    "base",
+    "archeslib >= 0.1.0",
+    "(?) angelsrefining",
+    "(?) angelsindustries",
+    "(?) angelspetrochem",
+    "(?) angelssmelting",
+    "(?) angelsexploration",
+    "(?) angelsbioprocessing",
+    "(?) boblibrary",
+    "(?) boblogistics"
+  ]
+}

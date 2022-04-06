@@ -1,0 +1,14 @@
+{
+  "name": "angels-flare-fix",
+  "version": "0.1.2",
+  "factorio_version": "1.1",
+  "title": "Angels Flare Fix",
+  "author": "ArcheCraft",
+  "contact": "",
+  "description": "Moves the flare stack technology further to the front",
+  "dependencies": [
+    "base",
+    "angelspetrochem",
+    "? angelsindutries"
+  ]
+}
