@@ -1,2 +1,2 @@
 
-arches.lib.functions:execute()
+arches.functions:execute_final_fixes()

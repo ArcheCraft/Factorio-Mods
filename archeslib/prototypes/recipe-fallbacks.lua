@@ -1,11 +1,13 @@
-local arguments = require "arguments"
+local arguments = require("arguments")
 
-local RB = {}
+---@class FallbackBuilder
+arches.functions.recipes.fallbacks = arches.functions.recipes.fallbacks or {}
+
 local fallbacks = {
     items = {},
     fluids = {}
 }
-local result = nil
+local final_fallbacks = nil
 
 local setFallback_fallback_arg = arguments.define({ "name", "multiplier" })
 
@@ -14,7 +16,7 @@ local setFallback_fallback_arg = arguments.define({ "name", "multiplier" })
 ---@param name string
 ---@param fallback { name: string, multiplier?: integer } | { [0]: string, [1]?: integer }
 ---@param priority any
-function RB.setFallback(type, name, fallback, priority)
+function arches.functions.recipes.fallbacks:set(type, name, fallback, priority)
     local fallback_name, fallback_multiplier = setFallback_fallback_arg:parse(fallback)
     local table = fallbacks[type][name]
     if (not table) then
@@ -26,12 +28,12 @@ function RB.setFallback(type, name, fallback, priority)
         multiplier = fallback_multiplier
     }
 
-    result = nil
+    final_fallbacks = nil
 end
 
-function RB.build()
-    if result == nil then
-        result = {
+local function compute_fallbacks()
+    if final_fallbacks == nil then
+        final_fallbacks = {
             items = {},
             fluids = {}
         }
@@ -43,22 +45,22 @@ function RB.build()
                     max_priority = math.max(max_priority, priority)
                 end
             end
-            result.items[name] = list[max_priority]
+            final_fallbacks.items[name] = list[max_priority]
         end
 
         for name, list in pairs(fallbacks.fluids) do
             table.sort(list, function (a, b)
                 return a.priority < b.priority
             end)
-            result.fluids[name] = list[1]
+            final_fallbacks.fluids[name] = list[1]
         end
     end
 
-    return result
+    return final_fallbacks
 end
 
 local function getFallback(type, name)
-    local result = RB.build()
+    local result = compute_fallbacks()
     if result[type] then
         local fallback = result[type][name]
         if fallback then
@@ -67,5 +69,3 @@ local function getFallback(type, name)
     end
     return name, 1
 end
-
-return RB

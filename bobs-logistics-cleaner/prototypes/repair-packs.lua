@@ -1,15 +1,17 @@
-if not arches.blc.triggers["blc-repair-packs"].mk2 then
-    arches.lib.functions.technology:remove("bob-repair-pack-2")
+local overwrites = arches.functions:overrides()
+
+if not arches.blc.triggers.repair_packs.mk2 then
+    overwrites.technologies:remove("bob-repair-pack-2")
 end
 
-if not arches.blc.triggers["blc-repair-packs"].mk3 then
-    arches.lib.functions.technology:remove("bob-repair-pack-3")
+if not arches.blc.triggers.repair_packs.mk3 then
+    overwrites.technologies:remove("bob-repair-pack-3")
 end
 
-if not arches.blc.triggers["blc-repair-packs"].mk4 then
-    arches.lib.functions.technology:remove("bob-repair-pack-4")
+if not arches.blc.triggers.repair_packs.mk4 then
+    overwrites.technologies:remove("bob-repair-pack-4")
 end
 
-if not arches.blc.triggers["blc-repair-packs"].mk5 then
-    arches.lib.functions.technology:remove("bob-repair-pack-5")
+if not arches.blc.triggers.repair_packs.mk5 then
+    overwrites.technologies:remove("bob-repair-pack-5")
 end

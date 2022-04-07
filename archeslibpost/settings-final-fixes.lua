@@ -1,2 +1,2 @@
 
-arches.lib.settings.overrides.execute()
+arches.settings.overrides:execute()

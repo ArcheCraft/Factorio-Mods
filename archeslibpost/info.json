@@ -8,7 +8,7 @@
   "description": "Library for ArcheCraft's mods",
   "dependencies": [
     "base",
-    "archeslib >= 0.1.0",
+    "archeslib >= 0.1.1",
     "(?) angelsrefining",
     "(?) angelsindustries",
     "(?) angelspetrochem",

@@ -8,7 +8,7 @@
   "description": "Allows you to remove some of the extra things added by Bob's Logstics",
   "dependencies": [
     "base",
-    "archeslib >= 0.1.0",
+    "archeslib >= 0.1.1",
     "boblogistics"
   ]
 }

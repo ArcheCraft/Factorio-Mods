@@ -1,6 +1,6 @@
-arches.lib.settings.overrides = arches.lib.settings.overrides or {}
+arches.settings.overrides = arches.settings.overrides or {}
 
-local data = {
+arches.settings.overrides.data = {
     defaults = {},
     overwrites = {}
 }
@@ -9,25 +9,25 @@ local data = {
 --- @param setting_type string [bool-setting | int-setting | double-setting | string-setting]
 --- @param setting_name string
 --- @param value boolean | string | int | double
-function arches.lib.settings.overrides:set_default_value(setting_type, setting_name, value)
-    self.data.defaults[#self.data.defaults + 1] = { 
+function arches.settings.overrides:set_default_value(setting_type, setting_name, value)
+    table.insert(self.data.defaults, { 
         type = setting_type,
         name = setting_name,
         value = value
-    }
+    })
 end
 
 --- Forces a setting to a specific value
 --- @param setting_type string [bool-setting | int-setting | double-setting | string-setting]
 --- @param setting_name string
 --- @param value boolean | string | int | double
-function arches.lib.settings.overrides:overwrite(setting_type, setting_name, value)
+function arches.settings.overrides:overwrite(setting_type, setting_name, value)
     -- setting_type: [bool-setting | int-setting | double-setting | string-setting]
-    self.data.overwrites[#self.data.overwrites + 1] = {
+    table.insert(self.data.overwrites + 1, {
         type = setting_type,
         name = setting_name,
         value = value
-    }
+    })
 end
 
 --- Sets the default value for a setting
@@ -68,16 +68,16 @@ local function overwrite(setting_type, setting_name, value)
 end
 
 --- Executes the data collected until now. Done automatically by 'archeslibpost'.
-function arches.lib.settings.overrides.execute()
-    for _, def in pairs(data.defaults) do
+function arches.settings.overrides:execute()
+    for _, def in pairs(self.data.defaults) do
         set_default_value(def.type, def.name, def.value)
     end
 
-    data.defaults = {}
+    self.data.defaults = {}
     
-    for _, ov in pairs(data.overwrites) do
+    for _, ov in pairs(self.data.overwrites) do
         overwrite(ov.type, ov.name, ov.value)
     end
 
-    data.overwrites = {}
+    self.data.overwrites = {}
 end

@@ -3,7 +3,7 @@ arches.blc = arches.blc or {}
 arches.blc.triggers = arches.blc.triggers or {}
 
 require("prototypes.settings")
-arches.lib.settings.triggers.read()
+arches.settings.triggers.read()
 
 log(serpent.block(arches.blc.triggers))
 
