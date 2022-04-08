@@ -3,6 +3,9 @@ Version: 0.1.4
 Date: ????
   Changes:
     - Update to archeslibrary version 0.1.1
+    - Fix pipe recipe not being removed
+    - Add option to remove steam inserter
+    - Add option to revert Angels Industries' change to inserter recipes
 ---------------------------------------------------------------------------------------------------
 Version: 0.1.3
 Date: 2022-04-06

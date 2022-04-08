@@ -3,6 +3,8 @@ Version: 0.1.1
 Date: ????
   Changes:
     - Refactor library functions
+    - Fix recipe unlocks not being removed
+    - Add option to replace ingredients of recipe
 ---------------------------------------------------------------------------------------------------
 Version: 0.1.0
 Date: 2022-04-03
