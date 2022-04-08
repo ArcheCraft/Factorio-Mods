@@ -13,3 +13,8 @@ settings:aggregating("trains", "f", "mk3", {"none", "mk2", "mk3"})
 settings:aggregating("pumps", "d", "mk4", {"none", "mk2", "mk3", "mk4"})
 settings:aggregating("storage_tanks", "e", "mk4", {"none", "mk2", "mk3", "mk4"})
 settings:aggregating("repair_packs", "j", "mk5", {"none", "mk2", "mk3", "mk4", "mk5"})
+
+settings:boolean("no_steam_inserter", "y", false)
+if mods["angelsindustries"] then
+    settings:boolean("no_industries_inserters", "z", false)
+end

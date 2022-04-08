@@ -1,10 +1,10 @@
 local overwrites = arches.functions:overrides()
 
 if not arches.blc.triggers.pipes.copper then
-    overwrites.technologies:remove("copper-pipe")
-    overwrites.technologies:remove("copper-pipe-to-ground")
-    overwrites.technologies:remove("stone-pipe")
-    overwrites.technologies:remove("stone-pipe-to-ground")
+    overwrites.recipes:remove("copper-pipe")
+    overwrites.recipes:remove("copper-pipe-to-ground")
+    overwrites.recipes:remove("stone-pipe")
+    overwrites.recipes:remove("stone-pipe-to-ground")
 end
 
 if not arches.blc.triggers.pipes.steel then
@@ -12,5 +12,5 @@ if not arches.blc.triggers.pipes.steel then
 end
 
 if not arches.blc.triggers.pipes.plastic then
-    overwrites.technologies:remove_recipe_unlock("plastics", {"plastics-pipe", "plastic-pipe-to-ground"})
+    overwrites.technologies:remove_recipe_unlock("plastics", {"plastic-pipe", "plastic-pipe-to-ground"})
 end

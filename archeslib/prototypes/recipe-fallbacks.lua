@@ -1,7 +1,9 @@
 local arguments = require("arguments")
 
+arches.functions.recipes = arches.functions.recipes or {}
+
 ---@class FallbackBuilder
-arches.functions.recipes.fallbacks = arches.functions.recipes.fallbacks or {}
+arches.functions.recipes.fallbacks = {}
 
 local fallbacks = {
     items = {},

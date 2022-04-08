@@ -6,7 +6,8 @@ local modifications = {
     },
     recipe = {
         removals = {},
-        re_enables = {}
+        re_enables = {},
+        ingredients = {}
     }
 }
 
@@ -73,6 +74,13 @@ function arches.functions:overrides()
         else
             modifications.recipe.re_enables[recipe] = true
         end
+    end
+
+    ---Replaces the ingredients of the specified recipe with the given ones
+    ---@param recipe string the recipe to modify
+    ---@param ingredients table[]
+    function recipes:set_ingredients(recipe, ingredients)
+        modifications.recipe.ingredients[recipe] = ingredients
     end
 
     ---@class TechnologyOverrideFunctions
@@ -208,6 +216,16 @@ local function process_recipe(recipe_name, recipe)
             recipe.expensive.enabled = true
         end
     end
+
+    if modifications.recipe.ingredients[recipe_name] then
+        recipe.ingredients = modifications.recipe.ingredients[recipe_name]
+        if recipe.normal then
+            recipe.normal.ingredients = modifications.recipe.ingredients[recipe_name]
+        end
+        if recipe.expensive then
+            recipe.expensive.ingredients = modifications.recipe.ingredients[recipe_name]
+        end
+    end
 end
 
 local function process_tech(tech_name, tech)
@@ -220,10 +238,10 @@ local function process_tech(tech_name, tech)
         local to_remove = {}
         for key, prereq in pairs(tech.prerequisites) do
             local new = prereq
-            while prereq_mods[prereq] ~= nil do
-                new = prereq_mods[prereq]
+            while prereq_mods[new] ~= nil do
+                new = prereq_mods[new]
             end
-            if not new then
+            if not new or modifications.technology.removals[new] then
                 to_remove[key] = true
             elseif new ~= prereq then
                 tech.prerequisites[key] = new
@@ -237,14 +255,14 @@ local function process_tech(tech_name, tech)
         local to_remove = {}
         for key, effect in pairs(tech.effects) do
             if effect.type == "unlock-recipe" then
-                local new = effect
-                while recipe_mods[effect] ~= nil do
-                    new = recipe_mods[effect]
+                local new = effect.recipe
+                while recipe_mods[new] ~= nil do
+                    new = recipe_mods[new]
                 end
-                if not new then
+                if not new or modifications.recipe.removals[new] then
                     to_remove[key] = true
                 elseif new ~= effect then
-                    tech.effects[key] = new
+                    effect.recipe = new
                 end
             end
         end
@@ -254,6 +272,8 @@ end
 
 ---Should only be called by archeslibpost in data-updates.lua
 function arches.functions:execute_updates()
+    log(serpent.block(modifications))
+
     for name, recipe in pairs(data.raw.recipe) do
         process_recipe(name, recipe)
     end
