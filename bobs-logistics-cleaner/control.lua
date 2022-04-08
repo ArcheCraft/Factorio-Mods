@@ -14,10 +14,12 @@ script.on_configuration_changed(function ()
 
     local recipes_to_enable = {
         "transport-belt", "basic-transport-belt",
-        "stone-pipe", "stone-pipe-to-ground", "copper-pipe", "copper-pipe-to-ground"
+        "stone-pipe", "stone-pipe-to-ground", "copper-pipe", "copper-pipe-to-ground",
+        "steam-inserter"
     }
 
     for _, force in pairs(game.forces) do
+        force.reset_recipes()
         force.reset_technologies()
 
         for _, tech in pairs(techs_to_enable) do
@@ -25,7 +27,7 @@ script.on_configuration_changed(function ()
                 force.technologies[tech].enabled = game.technology_prototypes[tech].enabled
             end
         end
-        
+
         for _, recipe in pairs(recipes_to_enable) do
             if force.recipes[recipe] then
                 force.recipes[recipe].enabled = game.recipe_prototypes[recipe].enabled
