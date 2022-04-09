@@ -182,6 +182,16 @@ function arches.functions:overrides()
             if angelsmods then
                 angelsmods.functions.add_flag(item, "hidden")
             else
+                if data.raw.fluid[item] then
+                    data.raw.fluid[item].hidden = true
+                else
+                    local item = data.raw.item[item]
+                    if item.flags then
+                        table.insert(item.flags, "hidden")
+                    else
+                        item.flags = {"hidden"}
+                    end
+                end
                 data.raw.item[item].hidden = true
             end
         end
