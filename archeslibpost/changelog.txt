@@ -1,6 +1,6 @@
 ---------------------------------------------------------------------------------------------------
 Version: 0.1.2
-Date: ????
+Date: 2022-04-09
   Changes:
     - Refactor library functions
     - Update archeslib to 0.1.1
