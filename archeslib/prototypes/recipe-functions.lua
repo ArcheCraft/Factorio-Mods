@@ -1,5 +1,8 @@
 local arguments = require("arguments")
 
+local utils = arches.functions.utils
+
+
 ---@class RecipeBuilder
 arches.functions.recipes = arches.functions.recipes or {}
 
@@ -190,23 +193,6 @@ local patch_blocked = {
     crafting_machine_tints = true
 }
 
-local function fall_through(a, ...)
-    local value = a
-
-    for _, b in pairs(table.pack(...)) do
-        if value ~= nil then
-            break
-        else
-            value = b
-        end
-    end
-
-    return value
-end
-
-local function safe_index(target, key)
-    return target and target[key]
-end
 
 local function patch_item_lists(base, patch)
     local result
@@ -269,6 +255,31 @@ local function patch_item_lists(base, patch)
             end
         end
 
+        local function replace(name, type, old)
+            if name ~= old then
+                local old_index = cached_indices[type][old]
+                if old_index then
+                    local new_index = cached_indices[type][name]
+                    if new_index then
+                        add(name, type, new_values[old_index].amount)
+
+                        for key, value in pairs(new_values[old_index]) do
+                            if not patch_blocked[key] then
+                                new_values[new_index][key] = value
+                            end
+                        end
+
+                        new_values[old_index] = nil
+                    else
+                        cached_indices[type][name] = old_index
+                        new_values[old_index].name = name
+                    end
+
+                    cached_indices[type][old] = nil
+                end
+            end
+        end
+
 
         local function copy_attributes(name, type, data)
             local index = cached_indices[type][name]
@@ -294,21 +305,32 @@ local function patch_item_lists(base, patch)
             local type, name, amount = item.type or "item", item.name or item[1], item.amount or item[2]
             if name == "!!" then
                 reset()
+            elseif tonumber(amount) then --If amount is a number, we always want to set
+                set(name, type, tonumber(amount))
+                copy_attributes(name, type, item)
             else
                 local operation
-                operation, amount = string.match(amount, "^([%*%+%-=]) (.+)")
-                amount = tonumber(amount)
+                operation, amount = string.match(amount, "^([%*%+%-/=!]) (.+)")
                 if operation == "=" then
-                    set(name, type, amount)
+                    set(name, type, tonumber(amount))
                     copy_attributes(name, type, item)
                 elseif operation == "+" then
-                    add(name, type, amount)
+                    add(name, type, tonumber(amount))
                     copy_attributes(name, type, item)
                 elseif operation == "-" then
-                    add(name, type, -amount)
+                    add(name, type, -tonumber(amount))
                     copy_attributes(name, type, item)
                 elseif operation == "*" then
-                    scale(name, type, amount)
+                    scale(name, type, tonumber(amount))
+                    copy_attributes(name, type, item)
+                elseif operation == "/" then
+                    scale(name, type, 1 / tonumber(amount))
+                    copy_attributes(name, type, item)
+                elseif operation == "!" then
+                    replace(name, type, amount)
+                    copy_attributes(name, type, item)
+                else --Replace if no operation given
+                    replace(name, type, amount)
                     copy_attributes(name, type, item)
                 end
             end
@@ -330,24 +352,24 @@ local function merge_patch(base, patch, key)
     if key == "ingredients" then
         return patch_item_lists(base, patch or {})
     else
-        return fall_through(base, patch)
+        return utils:fall_through(base, patch)
     end
 end
 
 local function get_split_value(target, key, expensive, is_base)
-    local value, value_normal, value_expensive = target[key], safe_index(target.normal, key), safe_index(target.expensive, key)
+    local value, value_normal, value_expensive = target[key], utils:safe_index(target.normal, key), utils:safe_index(target.expensive, key)
 
     if expensive then
         if is_base then
-            return fall_through(value_expensive, value, value_normal)
+            return utils:fall_through(value_expensive, value, value_normal)
         else
-            return fall_through(value_expensive, value)
+            return utils:fall_through(value_expensive, value)
         end
     else
         if is_base then
-            return fall_through(value_normal, value, value_expensive)
+            return utils:fall_through(value_normal, value, value_expensive)
         else
-            return fall_through(value_normal, value)
+            return utils:fall_through(value_normal, value)
         end
     end
 end
@@ -371,12 +393,12 @@ local function merge_patch_results(target, base, patch, split_difficulty, expens
         target.results = results
     elseif patch_result then
         target.result = patch_result
-        target.result_count = fall_through(patch_count, base_count)
+        target.result_count = utils:fall_through(patch_count, base_count)
     elseif base_results then
         target.results = base_results
     else
         target.result = base_result
-        target.result_count = fall_through(patch_count, base_count)
+        target.result_count = utils:fall_through(patch_count, base_count)
     end
 end
 
@@ -397,8 +419,8 @@ local function apply_patch(patch)
             result.expensive = {}
 
             for key in pairs(difficulty_split_keys) do
-                result.normal[key] = merge_patch(get_split_value(base, key, false), get_split_value(patch, key, false), key)
-                result.expensive[key] = merge_patch(get_split_value(base, key, true), get_split_value(patch, key, true), key)
+                result.normal[key] = merge_patch(get_split_value(base, key, false, true), get_split_value(patch, key, false), key)
+                result.expensive[key] = merge_patch(get_split_value(base, key, true, true), get_split_value(patch, key, true), key)
             end
 
             merge_patch_results(result.normal, base, patch, true, false)
@@ -440,5 +462,56 @@ function arches.functions.recipes:patch(patch_list)
     end
     if next(recipes) then
         self:build(recipes)
+    end
+end
+
+
+function arches.functions.recipes:is_difficulty_split(recipe)
+    for key in pairs(difficulty_split_keys) do
+        if recipe[key] ~= nil then
+            return true
+        end
+    end
+
+    return false
+end
+
+function arches.functions.recipes:difficulty_split_patch(patch)
+    if self:is_difficulty_split(patch) then
+        utils:ensure_subtable(patch, "normal")
+        utils:ensure_subtable(patch, "normal")
+
+        for key in pairs(difficulty_split_keys) do
+            if patch[key] ~= nil then
+                patch.normal[key] = patch.normal[key] or table.deepcopy(patch[key])
+                patch.expensive[key] = patch.expensive[key] or patch[key]
+                patch[key] = nil
+            end
+        end
+    end
+end
+
+function arches.functions.recipes:merge_patches(old, new)
+    if self:is_difficulty_split(old) or self:is_difficulty_split(new) then
+        self:difficulty_split_patch(old)
+        self:difficulty_split_patch(new)
+    end
+
+    for key, value in pairs(new) do
+        if key == "ingredients" or key == "results" then --Merge the tables
+            if old[key] then --It's definitely a table
+                utils:append_table(old[key], value)
+            else
+                old[key] = value
+            end
+        elseif key == "normal" or key == "expensive" then --Recursively merge the difficulty recipes
+            if old[key] then --It's definitely a table
+                self:merge_patches(old[key], value)
+            else
+                old[key] = value
+            end
+        else --Everything else just gets overwritten
+            old[key] = value
+        end
     end
 end

@@ -2,6 +2,8 @@
 Version: 0.1.6
 Date: ????
   Changes:
+    - Update archeslib to 0.1.2
+    - Better translation for no-industries-inserters setting
 ---------------------------------------------------------------------------------------------------
 Version: 0.1.5
 Date: 2022-04-08

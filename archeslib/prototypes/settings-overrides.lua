@@ -1,3 +1,4 @@
+---@class ArchesSettingsOverrides
 arches.settings.overrides = arches.settings.overrides or {}
 
 arches.settings.overrides.data = {
@@ -6,7 +7,7 @@ arches.settings.overrides.data = {
 }
 
 --- Sets the default value for a setting
---- @param setting_type string [bool-setting | int-setting | double-setting | string-setting]
+--- @param setting_type '"bool-setting"'|'"int-setting"'|'"double-setting"'|'"string-setting"'' The type of the setting
 --- @param setting_name string
 --- @param value boolean | string | int | double
 function arches.settings.overrides:set_default_value(setting_type, setting_name, value)
@@ -18,7 +19,7 @@ function arches.settings.overrides:set_default_value(setting_type, setting_name,
 end
 
 --- Forces a setting to a specific value
---- @param setting_type string [bool-setting | int-setting | double-setting | string-setting]
+--- @param setting_type '"bool-setting"'|'"int-setting"'|'"double-setting"'|'"string-setting"'' The type of the setting
 --- @param setting_name string
 --- @param value boolean | string | int | double
 function arches.settings.overrides:overwrite(setting_type, setting_name, value)
@@ -31,7 +32,7 @@ function arches.settings.overrides:overwrite(setting_type, setting_name, value)
 end
 
 --- Sets the default value for a setting
---- @param setting_type string [bool-setting | int-setting | double-setting | string-setting]
+--- @param setting_type '"bool-setting"'|'"int-setting"'|'"double-setting"'|'"string-setting"'' The type of the setting
 --- @param setting_name string
 --- @param value boolean | string | int | double
 local function set_default_value(setting_type, setting_name, value)
@@ -44,7 +45,7 @@ local function set_default_value(setting_type, setting_name, value)
 end
 
 --- Forces a setting to a specific value
---- @param setting_type string [bool-setting | int-setting | double-setting | string-setting]
+--- @param setting_type '"bool-setting"'|'"int-setting"'|'"double-setting"'|'"string-setting"'' The type of the setting
 --- @param setting_name string
 --- @param value boolean | string | int | double
 local function overwrite(setting_type, setting_name, value)

@@ -1,5 +1,7 @@
 arches = arches or {}
+---@class BLCGlobals
 arches.blc = arches.blc or {}
+---@type table
 arches.blc.triggers = arches.blc.triggers or {}
 
 require("prototypes.settings")

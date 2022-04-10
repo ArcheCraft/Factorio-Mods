@@ -1,4 +1,4 @@
----@class SettingsTriggers
+---@class ArchesSettingsTriggers
 arches.settings.triggers = arches.settings.triggers or {}
 
 local triggers = {

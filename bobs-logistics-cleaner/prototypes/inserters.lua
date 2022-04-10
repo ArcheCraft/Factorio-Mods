@@ -22,29 +22,44 @@ if disabled or arches.blc.triggers.no_steam_inserter then
 end
 
 if disabled then
-    overwrites.recipes:set_ingredients("inserter", {
-        {type = "item", name = "circuit-grey", amount = 1},
-        {type = "item", name = "mechanical-parts", amount = 1},
-        {type = "item", name = "angels-servo-motor-1", amount = 1}
+    overwrites.recipes:patch_recipes("inserter", {
+        ingredients = {
+            {"!!"},
+            {"circuit-grey", 1},
+            {"mechanical-parts", 1},
+            {"angels-servo-motor-1", 1}
+        }
     })
-    overwrites.recipes:set_ingredients("fast-inserter", {
-        {type = "item", name = "inserter", amount = 1},
-        {type = "item", name = "circuit-red-loaded", amount = 2},
-        {type = "item", name = "angels-servo-motor-1", amount = 1}
+    overwrites.recipes:patch_recipes("fast-inserter", {
+        ingredients = {
+            {"!!"},
+            {"inserter", 1},
+            {"circuit-red-loaded", 2},
+            {"angels-servo-motor-1", 1}
+        }
     })
-    overwrites.recipes:set_ingredients("filter-inserter", {
-        {type = "item", name = "fast-inserter", amount = 1},
-        {type = "item", name = "circuit-red-loaded", amount = 3}
+    overwrites.recipes:patch_recipes("filter-inserter", {
+        ingredients = {
+            {"!!"},
+            {"fast-inserter", 1},
+            {"circuit-red-loaded", 3}
+        }
     })
-    overwrites.recipes:set_ingredients("stack-inserter", {
-        {type = "item", name = "fast-inserter", amount = 1},
-        {type = "item", name = "circuit-green-loaded", amount = 4},
-        {type = "item", name = "circuit-orange-loaded", amount = 1},
-        {type = "item", name = "angels-servo-motor-2", amount = 2}
+    overwrites.recipes:patch_recipes("stack-inserter", {
+        ingredients = {
+            {"!!"},
+            {"fast-inserter", 1},
+            {"circuit-green-loaded", 4},
+            {"circuit-orange-loaded", 1},
+            {"angels-servo-motor-2", 2}
+        }
     })
-    overwrites.recipes:set_ingredients("stack-filter-inserter", {
-        {type = "item", name = "fast-inserter", amount = 1},
-        {type = "item", name = "circuit-orange-loaded", amount = 3},
-        {type = "item", name = "angels-servo-motor-3", amount = 1}
+    overwrites.recipes:patch_recipes("stack-filter-inserter", {
+        ingredients = {
+            {"!!"},
+            {"fast-inserter", 1},
+            {"circuit-orange-loaded", 3},
+            {"angels-servo-motor-3", 1}
+        }
     })
 end
